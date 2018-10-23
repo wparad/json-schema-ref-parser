@@ -90,6 +90,17 @@ declare class $RefParser {
     options?: $RefParser.Options,
     callback?: (err: Error | null, $refs: $RefParser.$Refs | null) => any
   ): Promise<$RefParser.$Refs>
+
+  /**
+   * Returns the metadata associated with a dereferenced $ref.
+   *
+   * NOTE: metadata only exists if the dereference.metadata option is set when calling the
+   * $RefParser.dereference method
+   *
+   * @param  {object} obj - The dereferenced $ref object
+   * @returns {object|undefined}
+   */
+  getMetadata(obj: object): Metadata | undefined;
 }
 
 declare namespace $RefParser {
@@ -137,7 +148,14 @@ declare namespace $RefParser {
        *
        * If set to `"ignore"`, then circular references will simply be ignored. No error will be thrown, but the `$Refs.circular` property will still be set to `true`.
        */
-      circular?: boolean | 'ignore'
+      circular?: boolean | 'ignore',
+
+      /**
+       * Determines whether the $RefParser.dereference method will store metadata about
+       * each dereferenced $ref. You can then retrieve this metadata using the
+       * $RefParser.getMetadata method.
+       */
+      metadata?: boolean,
     }
   }
 

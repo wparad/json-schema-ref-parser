@@ -12,6 +12,7 @@ This is the default export of JSON Schema $Ref Parser.  You can creates instance
 - [`bundle()`](#bundleschema-options-callback)
 - [`parse()`](#parseschema-options-callback)
 - [`resolve()`](#resolveschema-options-callback)
+- [`getMetadata()`](#getmetadata)
 
 ### `schema`
 The `schema` property is the parsed/bundled/dereferenced JSON Schema object.  This is the same value that is passed to the callback function (or Promise) when calling the [`parse`](#parseschema-options-callback), [`bundle`](#bundleschema-options-callback), or [`dereference`](#dereferenceschema-options-callback) methods.
@@ -162,4 +163,32 @@ $RefParser.resolve("my-schema.yaml")
     // $refs.set() lets you change parts of your schema
     $refs.set("schemas/people/Bruce-Wayne.json#/properties/favoriteColor/default", "black");
   });
+```
+
+
+### `getMetadata(object)`
+
+Returns the metadata associated with a dereferenced `$ref`.
+
+The [`dereference`](#dereferenceschema-options-callback) method _replaces_ each `$ref` with the value that it points to, so the original `$ref` is lost.  It can sometimes be useful to know information about about the original `$ref` object, and this is why the [`dereference.metadata`](options.md#dereference-options) option exists.  When enabled, the [`dereference`](#dereferenceschema-options-callback) method will store metadata about each resolved `$ref`.  You can then use the `getMetadata` method to retrieve this metadata.
+
+The returned metadata object contains the following information:
+
+- `$ref` - `string`<br>
+The original `$ref` path
+
+- `path` - `string`<br>
+The file path of the `$ref` object, including a JSON Pointer hash
+
+- `pathFromRoot` - `string`<br>
+The path of the `$ref` object, from the root of the schema
+
+
+```javascript
+$RefParser.dereference("my-schema.yaml", { dereference: { metadata: true }})
+  .then(function(schema)) {
+    //
+  });
+// var obj = dereferenced value
+var meta = $RefParser.getMetadata(obj.properties.a)
 ```
