@@ -52,6 +52,7 @@ jobs:
 
       - name: Send code coverage results to Coveralls
         uses: coverallsapp/github-action@v1.1.0
+        if: github.repository_owner == 'APIDevTools'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           parallel: true
@@ -93,6 +94,7 @@ jobs:
 
       - name: Send code coverage results to Coveralls
         uses: coverallsapp/github-action@v1.1.0
+        if: github.repository_owner == 'APIDevTools'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           parallel: true
@@ -107,6 +109,7 @@ jobs:
     steps:
       - name: Let Coveralls know that all tests have finished
         uses: coverallsapp/github-action@v1.1.0
+        if: github.repository_owner == 'APIDevTools'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           parallel-finished: true
